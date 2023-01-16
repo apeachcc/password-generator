@@ -90,16 +90,97 @@ var upperCasedCharacters = [
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  let length = parseInt(
+    prompt('How many characters you want to add to your password?')
+  )
+  if (isNaN(length) === true) {
+    alert(`Password length must be provided as number`);
+    return;
+  }
+  if (length < 10) {
+    alert(`Password length must be at least 10 characters`);
+    return;
+  }
+  if (length > 65) {
+    alert(`Password length must be less than 65 characters`);
+    return;
+  }
+  let hasSpecialCharacters = confirm(
+    `Click OK to confirm including special characters`
+  )
+  let hasNumericCharacters = confirm(
+    `Click OK to confirm including numeric characters`
+  )
+  let hasLowerCasedCharacters = confirm(
+    `Click OK to confirm including lowercase characters`
+  )
+  let hasUpperCasedCharacters = confirm(
+    `Click OK to confirm including uppercase characters`
+  )
+  if (hasSpecialCharacters === false &&
+    hasNumericCharacters === false &&
+    hasLowerCasedCharacters === false &&
+    hasUpperCasedCharacters === false) {
+      alert(`Must select at least one character type`);
+      return;
+  }
+
+  let passwordOptions ={
+    length: length,
+    hasSpecialCharacters: hasSpecialCharacters,
+    hasNumericCharacters:hasNumericCharacters,
+    hasLowerCasedCharacters: hasLowerCasedCharacters,
+    hasUpperCasedCharacters: hasUpperCasedCharacters,
+  }
+  return passwordOptions;
+
 
 }
 
 // Function for getting a random element from an array
 function getRandom(arr) {
+  let randomIndex = Math.floor(Math.random() * arr.length)
+  let randomElement = arr[randomIndex];
+
+  return randomElement;
 
 }
 
 // Function to generate password with user input
 function generatePassword() {
+  let options = getPasswordOptions();
+  console.log(options);
+  let result = []
+
+  let possibleCharacter = []
+
+  let guaranteedCharacter =[]
+  if(options.hasSpecialCharacters){
+    possibleCharacter=possibleCharacter.concat(specialCharacters);
+    guaranteedCharacter.push(getRandom(specialCharacters))
+  }
+
+  if(options.haslowerCasedCharacters){
+    possibleCharacter=possibleCharacter.concat(lowerCasedCharacters);
+    guaranteedCharacter.push(getRandom(lowerCasedCharacters));
+  }
+
+  if(options.hasupperCasedCharacters){
+    possibleCharacter=possibleCharacter.concat(upperCasedCharacters);
+    guaranteedCharacter.push(getRandom(upperCasedCharacters))
+  }
+  if(options.hasNumericCharacters){
+    possibleCharacter=possibleCharacter.concat(numericCharacters);
+    guaranteedCharacter.push(getRandom(numericCharacters))
+  }
+
+  for(let index=0;index<options.length;index++){
+    var generated = getRandom(possibleCharacter);
+    result.push(generated);
+  }
+  console.log (possibleCharacter);
+  console.log(guaranteedCharacter);
+  return result.join("")
 
 }
 
